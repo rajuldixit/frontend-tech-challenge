@@ -31,7 +31,7 @@ const FeedCard = ({ feed, onClick }: IFeedCardProps) => {
             alt=""
             style={{ width: "24px", height: "24px", marginRight: "8px" }}
           />
-          <p>{feed.brand.name}</p>
+          <Typography variant="body1">{feed.brand.name}</Typography>
         </section>
         <Button component="a">Join Brief Now</Button>
       </Stack>
@@ -41,7 +41,7 @@ const FeedCard = ({ feed, onClick }: IFeedCardProps) => {
           variant="body2"
           sx={{ position: "absolute", bottom: "0", left: "8px", color: "#fff" }}
         >
-          {feed.banner_text}
+          {feed.feed_title}
         </Typography>
       </Stack>
     </Card>
