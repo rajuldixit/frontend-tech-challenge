@@ -27,10 +27,10 @@ const FeedComments = ({
     <Container
       maxWidth={false}
       sx={{
-        flexDirection: "row",
+        flexDirection: { xs: "column-reverse", sm: "row" },
         display: "flex",
         justifyContent: "space-between",
-        height: "100vh",
+        height: { sm: "100vh" },
         position: "relative",
         padding: "0 !important",
         boxSizing: "border-box",
@@ -39,8 +39,8 @@ const FeedComments = ({
     >
       <Stack
         sx={{
-          width: "70%",
-          height: "inherit",
+          width: { xs: "100%", sm: "70%" },
+          height: { xs: "70vh", sm: "inherit" },
           background: bgColor,
           display: "flex",
           justifyContent: "space-between",
@@ -56,7 +56,7 @@ const FeedComments = ({
               flexDirection: "column",
               minHeight: "500px",
               alignItems: "center",
-              width: "55%"
+              width: { xs: "80%", sm: "55%" }
             }}
           >
             <img
@@ -123,7 +123,8 @@ const FeedComments = ({
       </Stack>
       <Stack
         sx={{
-          width: "30%",
+          width: { xs: "100%", sm: "30%" },
+          height: { xs: "30vh", sm: "inherit" },
           background: "lightgrey",
           padding: "16px",
           boxSizing: "border-box"
@@ -151,7 +152,7 @@ const FeedComments = ({
           <>
             <Typography>Comments</Typography>
             {feedComments?.comment?.map((item) => (
-              <Typography variant="body2" my={1}>
+              <Typography variant="body2" my={1} key={item.comment}>
                 {item.comment}
               </Typography>
             ))}
