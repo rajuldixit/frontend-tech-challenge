@@ -30,21 +30,27 @@ const Feeds = () => {
     axios
       .get(`${BASE_SERVER_URL}${FETCH_COMMENTS}?briefref=${feed.briefref}`)
       .then((resp) => {
-        console.log(resp.data[0] !== null ? resp.data : new Array());
         setFeedComments({
           feed: feed,
           comment: resp.data[0] !== null ? resp.data : new Array()
         });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => setErrorMessage(e.message));
   };
+
   const fetchFeeds = useCallback(async () => {
-    axios
-      .get(`${BASE_SERVER_URL}${FETCH_FEEDS}?page=${page}&limit=${limit}`)
-      .then((resp) => {
-        setItems((prevItems) => [...prevItems, ...resp.data]);
-      })
-      .catch((e) => console.log(e));
+    setLoading(true);
+    try {
+      axios
+        .get(`${BASE_SERVER_URL}${FETCH_FEEDS}?page=${page}&limit=${limit}`)
+        .then((resp) => {
+          setItems((prevItems) => [...prevItems, ...resp.data]);
+        });
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
     setPage((prevPage) => prevPage + 1);
   }, [page, loading]);
 
@@ -68,7 +74,9 @@ const Feeds = () => {
   return (
     <>
       {loading ? (
-        <div>loading</div>
+        <Typography variant="h3" m={4}>
+          Loading
+        </Typography>
       ) : !errorMessage ? (
         <>
           {items.length > 0 ? (
@@ -91,11 +99,15 @@ const Feeds = () => {
               </Stack>
             </Box>
           ) : (
-            <Typography>No records found</Typography>
+            <Typography variant="h3" m={4}>
+              No records found
+            </Typography>
           )}
         </>
       ) : (
-        <div>{errorMessage}</div>
+        <Typography variant="h3" m={4}>
+          {errorMessage}
+        </Typography>
       )}
       {isLayover && (
         <Layover>

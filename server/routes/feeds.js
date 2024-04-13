@@ -30,7 +30,6 @@ router.get("/comments", (req, res) => {
     const relatedComments = comments.map((comment) => {
       if (comment.briefref === briefref) return comment;
     });
-    console.log(relatedComments);
     res.status(200).send(relatedComments);
   } catch (error) {
     res.status(400).send({ message: e.message });
