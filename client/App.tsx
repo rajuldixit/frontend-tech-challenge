@@ -7,10 +7,12 @@ import { Container } from "@mui/material";
 function App() {
   return (
     <Container
+      maxWidth={false}
       sx={{
         position: "relative",
         padding: "0 !important",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
+        margin: "0 !important"
       }}
     >
       <Feeds />

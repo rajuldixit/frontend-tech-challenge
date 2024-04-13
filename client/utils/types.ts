@@ -27,6 +27,6 @@ export interface IComment {
 }
 
 export interface IFeedsComment {
-  comment: IComment;
+  comment: IComment[];
   feed: IFeed;
 }

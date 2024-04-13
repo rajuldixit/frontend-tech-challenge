@@ -1,15 +1,163 @@
-import React from "react";
-import { Stack, Container } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Stack, Container, Box, Typography } from "@mui/material";
+import HighlightOffTwoToneIcon from "@mui/icons-material/HighlightOffTwoTone";
+import ExpandCircleDownTwoToneIcon from "@mui/icons-material/ExpandCircleDownTwoTone";
+import moment from "moment";
+import { IFeedsComment } from "../utils/types";
 
-// import closeSvg from "../../public/close-dialog.svg";
-import { IComment, IFeedsComment } from "../utils/types";
-
-const FeedComments = ({ feedComments }: { feedComments?: IFeedsComment }) => {
+const FeedComments = ({
+  feedComments,
+  closeLayover
+}: {
+  feedComments?: IFeedsComment;
+  closeLayover: () => void;
+}) => {
+  const [isBanneImage, setIsBanneImage] = useState(true);
+  const [bgColor, setbgColor] = useState("#2e2d2d");
+  const onChangeMiddleSection = (flag: boolean) => {
+    setIsBanneImage(flag);
+  };
+  const formatDate = (date: string) => {
+    return moment(new Date(date)).format("DD MMMM YYYY");
+  };
+  useEffect(() => {
+    console.log(isBanneImage);
+    isBanneImage ? setbgColor("#2e2d2d") : setbgColor("#fff");
+  }, [isBanneImage]);
   console.log(feedComments);
   return (
-    <Container sx={{ flexDirection: "row" }}>
-      <Stack>{/* <img src={closeSvg} alt="close-layover" /> */}</Stack>
-      <Stack></Stack>
+    <Container
+      maxWidth={false}
+      sx={{
+        flexDirection: "row",
+        display: "flex",
+        justifyContent: "space-between",
+        height: "100vh",
+        position: "relative",
+        padding: "0 !important",
+        boxSizing: "border-box",
+        margin: "0 !important"
+      }}
+    >
+      <Stack
+        sx={{
+          width: "70%",
+          height: "inherit",
+          background: bgColor,
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "row"
+        }}
+      >
+        <HighlightOffTwoToneIcon onClick={closeLayover} />
+        {!isBanneImage && (
+          <Box
+            sx={{
+              overflowY: "scroll",
+              display: "flex",
+              flexDirection: "column",
+              minHeight: "500px",
+              alignItems: "center",
+              width: "55%"
+            }}
+          >
+            <img
+              src={feedComments?.feed.brand.logo}
+              style={{ width: "48px", height: "48px", marginRight: "8px" }}
+              alt="logo"
+            />
+            <Typography variant="h6" my={1}>
+              {feedComments?.feed.feed_title}
+            </Typography>
+            <Typography variant="body1" my={1}>
+              {formatDate(feedComments?.feed.starts_on || "")}
+            </Typography>
+            <Typography variant="body1">
+              {feedComments?.feed.banner_text}
+            </Typography>
+            <img
+              src={feedComments?.feed.ad_1_image}
+              alt="image1"
+              style={{ width: "400px", height: "400px", marginRight: "8px" }}
+            />
+            <Typography variant="body2" my={2}>
+              {feedComments?.feed.description}
+            </Typography>
+            <img
+              src={feedComments?.feed.ad_2_image}
+              alt="image1"
+              style={{ width: "400px", height: "400px", marginRight: "8px" }}
+            />
+          </Box>
+        )}
+        {isBanneImage && (
+          <Box
+            sx={{
+              height: "inherit",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <Stack sx={{ background: "black", width: "55%" }}>
+              <img
+                src={feedComments?.feed.banner_image}
+                style={{ height: "inheri", width: "inherit" }}
+                alt="feed-banner-image"
+              />
+            </Stack>
+          </Box>
+        )}
+
+        <Stack justifyContent={"center"} flexDirection={"column"}>
+          <ExpandCircleDownTwoToneIcon
+            sx={{ rotate: "180deg" }}
+            onClick={() => onChangeMiddleSection(true)}
+          />
+          <ExpandCircleDownTwoToneIcon
+            onClick={() => onChangeMiddleSection(false)}
+          />
+        </Stack>
+      </Stack>
+      <Stack
+        sx={{
+          width: "30%",
+          background: "lightgrey",
+          padding: "16px",
+          boxSizing: "border-box"
+        }}
+      >
+        <section
+          style={{
+            display: "flex",
+            alignItems: "center",
+            padding: "0 8px",
+            boxSizing: "border-box"
+          }}
+        >
+          <img
+            src={feedComments?.feed.brand.logo}
+            alt=""
+            style={{ width: "24px", height: "24px", marginRight: "8px" }}
+          />
+          <Typography variant="body1" my={1}>
+            {feedComments?.feed.brand.name}
+          </Typography>
+        </section>
+
+        {feedComments?.comment && feedComments?.comment?.length > 0 ? (
+          <>
+            <Typography>Comments</Typography>
+            {feedComments?.comment?.map((item) => (
+              <Typography variant="body2" my={1}>
+                {item.comment}
+              </Typography>
+            ))}
+          </>
+        ) : (
+          <Typography>No comments available</Typography>
+        )}
+      </Stack>
     </Container>
   );
 };
