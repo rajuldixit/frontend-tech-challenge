@@ -25,3 +25,8 @@ export interface IComment {
   comment: string;
   submitted_on: string;
 }
+
+export interface IFeedsComment {
+  comment: IComment;
+  feed: IFeed;
+}

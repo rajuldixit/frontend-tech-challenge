@@ -4,15 +4,18 @@ import { IFeed } from "../utils/types";
 
 interface IFeedCardProps {
   feed: IFeed;
+  onClick: () => void;
 }
-const FeedCard = ({ feed }: IFeedCardProps) => {
+const FeedCard = ({ feed, onClick }: IFeedCardProps) => {
   return (
     <Card
       sx={{
         width: "300px",
         margin: "4px 0",
-        boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px"
+        boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+        cursor: "pointer"
       }}
+      onClick={onClick}
     >
       <Stack flexDirection={"row"} justifyContent={"space-between"}>
         <section

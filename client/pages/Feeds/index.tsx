@@ -2,9 +2,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import { Box, Container, Stack } from "@mui/material";
 import FeedCard from "../../components/FeedCard";
-import { IFeed } from "../../utils/types";
+import { IComment, IFeed, IFeedsComment } from "../../utils/types";
 import axios from "axios";
-import { FETCH_FEEDS } from "../../utils/endpoints";
+import { FETCH_COMMENTS, FETCH_FEEDS } from "../../utils/endpoints";
+import Layover from "../../commonComponents/Layover";
+import FeedComments from "../../components/FeedComments";
 
 const Feeds = () => {
   const [page, setPage] = useState(1);
@@ -12,12 +14,25 @@ const Feeds = () => {
   const [items, setItems] = useState(new Array());
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [feedComments, setFeedComments] = useState<IFeedsComment>();
   const BASE_SERVER_URL = process.env.REACT_APP_BASE_SERVER_URL;
 
   const [isLayover, setLayover] = useState(false);
 
+  const showComments = (feed: IFeed) => {
+    fetchComments(feed);
+    setLayover(true);
+  };
+
+  const fetchComments = async (feed: IFeed) => {
+    axios
+      .get(`${BASE_SERVER_URL}${FETCH_COMMENTS}?briefref=${feed.briefref}`)
+      .then((resp) => {
+        setFeedComments({ feed: feed, comment: resp.data });
+      })
+      .catch((e) => console.log(e));
+  };
   const fetchFeeds = useCallback(async () => {
-    console.log(BASE_SERVER_URL);
     axios
       .get(`${BASE_SERVER_URL}${FETCH_FEEDS}?page=${page}&limit=${limit}`)
       .then((resp) => {
@@ -59,14 +74,22 @@ const Feeds = () => {
           <Stack>
             {items &&
               items?.map((feed: IFeed) => (
-                <FeedCard key={feed.briefref} feed={feed} />
+                <FeedCard
+                  key={feed.briefref}
+                  feed={feed}
+                  onClick={() => showComments(feed)}
+                />
               ))}
           </Stack>
         </Box>
       ) : (
         <div>{errorMessage}</div>
       )}
-      {}
+      {isLayover && (
+        <Layover>
+          <FeedComments feedComments={feedComments} />
+        </Layover>
+      )}
     </>
   );
 };
