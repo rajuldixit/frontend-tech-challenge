@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import useAxios from "../../hooks/useAxios";
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import FeedCard from "../../components/FeedCard";
 import { IComment, IFeed, IFeedsComment } from "../../utils/types";
 import axios from "axios";

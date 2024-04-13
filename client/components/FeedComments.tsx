@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Stack, Container, Box, Typography } from "@mui/material";
+import { Stack, Container, Box, Typography, Button } from "@mui/material";
 import HighlightOffTwoToneIcon from "@mui/icons-material/HighlightOffTwoTone";
 import ExpandCircleDownTwoToneIcon from "@mui/icons-material/ExpandCircleDownTwoTone";
 import moment from "moment";
 import { IFeedsComment } from "../utils/types";
+import useFormatedDate from "../helper/useFormatedDate";
 
 const FeedComments = ({
   feedComments,
@@ -14,17 +15,14 @@ const FeedComments = ({
 }) => {
   const [isBanneImage, setIsBanneImage] = useState(true);
   const [bgColor, setbgColor] = useState("#2e2d2d");
+  const { formatDate } = useFormatedDate();
   const onChangeMiddleSection = (flag: boolean) => {
     setIsBanneImage(flag);
   };
-  const formatDate = (date: string) => {
-    return moment(new Date(date)).format("DD MMMM YYYY");
-  };
+
   useEffect(() => {
-    console.log(isBanneImage);
     isBanneImage ? setbgColor("#2e2d2d") : setbgColor("#fff");
   }, [isBanneImage]);
-  console.log(feedComments);
   return (
     <Container
       maxWidth={false}
@@ -80,7 +78,7 @@ const FeedComments = ({
               alt="image1"
               style={{ width: "400px", height: "400px", marginRight: "8px" }}
             />
-            <Typography variant="body2" my={2}>
+            <Typography variant="body2" my={2} sx={{ width: "400px" }}>
               {feedComments?.feed.description}
             </Typography>
             <img
@@ -110,13 +108,17 @@ const FeedComments = ({
         )}
 
         <Stack justifyContent={"center"} flexDirection={"column"}>
-          <ExpandCircleDownTwoToneIcon
-            sx={{ rotate: "180deg" }}
-            onClick={() => onChangeMiddleSection(true)}
-          />
-          <ExpandCircleDownTwoToneIcon
-            onClick={() => onChangeMiddleSection(false)}
-          />
+          <Button disabled={isBanneImage}>
+            <ExpandCircleDownTwoToneIcon
+              sx={{ rotate: "180deg" }}
+              onClick={() => onChangeMiddleSection(true)}
+            />
+          </Button>
+          <Button disabled={!isBanneImage}>
+            <ExpandCircleDownTwoToneIcon
+              onClick={() => onChangeMiddleSection(false)}
+            />
+          </Button>
         </Stack>
       </Stack>
       <Stack
